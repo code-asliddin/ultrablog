@@ -1,19 +1,4 @@
 flask
 werkzeug
-vercel.json yarating:
-nano vercel.json
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "app.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "app.py"
-    }
-  ]
-}
+pymysql
+cryptography
