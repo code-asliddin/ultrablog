@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Admin Panel{% endblock %}
+{% block content %}
+
+<div class="max-w-6xl mx-auto px-4 py-12">
+
+    <!-- HEADER -->
+    <div class="flex items-center justify-between mb-10">
+        <div>
+            <h1 class="text-4xl font-black gradient-text">Admin Panel</h1>
+            <p class="text-gray-500 mt-1">Barcha postlarni boshqaring</p>
+        </div>
+        <div class="flex gap-3">
+            <a href="/admin/new"
+                class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 px-6 py-3 rounded-xl font-bold transition flex items-center gap-2 glow">
+                <i class="fas fa-plus"></i> Yangi post
+            </a>
+            <a href="/logout"
+                class="bg-gray-800 hover:bg-gray-700 border border-gray-700 px-6 py-3 rounded-xl font-semibold transition flex items-center gap-2 text-gray-300">
+                <i class="fas fa-sign-out-alt"></i> Chiqish
+            </a>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-gray-900/60 border border-gray-800/60 rounded-2xl p-6 flex items-center gap-4">
+            <div class="w-14 h-14 bg-purple-900/50 rounded-xl flex items-center justify-center text-2xl">📝</div>
+            <div>
+                <p class="text-3xl font-black text-white">{{ posts|length }}</p>
+                <p class="text-gray-500 text-sm">Jami postlar</p>
+            </div>
+        </div>
+        <div class="bg-gray-900/60 border border-gray-800/60 rounded-2xl p-6 flex items-center gap-4">
+            <div class="w-14 h-14 bg-indigo-900/50 rounded-xl flex items-center justify-center text-2xl">👁️</div>
+            <div>
+                <p class="text-3xl font-black text-white">{{ posts|sum(attribute='views') }}</p>
+                <p class="text-gray-500 text-sm">Jami ko'rishlar</p>
+            </div>
+        </div>
+        <div class="bg-gray-900/60 border border-gray-800/60 rounded-2xl p-6 flex items-center gap-4">
+            <div class="w-14 h-14 bg-pink-900/50 rounded-xl flex items-center justify-center text-2xl">🔥</div>
+            <div>
+                <p class="text-3xl font-black text-white">
+                    {% if posts %}{{ posts|max(attribute='views')|attr('views') }}{% else %}0{% endif %}
+                </p>
+                <p class="text-gray-500 text-sm">Eng ko'p ko'rilgan</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- POSTS TABLE -->
+    <div class="bg-gray-900/60 border border-gray-800/60 rounded-2xl overflow-hidden">
+        <div class="p-6 border-b border-gray-800/60">
+            <h2 class="text-xl font-bold">📋 Barcha postlar</h2>
+        </div>
+        {% if posts %}
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-gray-800/60 text-gray-500 text-sm">
+                        <th class="text-left px-6 py-4">#</th>
+                        <th class="text-left px-6 py-4">Sarlavha</th>
+                        <th class="text-left px-6 py-4">Kategoriya</th>
+                        <th class="text-left px-6 py-4">Ko'rishlar</th>
+                        <th class="text-left px-6 py-4">Sana</th>
+                        <th class="text-left px-6 py-4">Amallar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                    <tr class="border-b border-gray-800/30 hover:bg-gray-800/30 transition">
+                        <td class="px-6 py-4 text-gray-500 text-sm">{{ loop.index }}</td>
+                        <td class="px-6 py-4">
+                            <a href="/post/{{ post['id'] }}" class="text-gray-200 hover:text-purple-400 font-medium transition">
+                                {{ post['title'][:50] }}{% if post['title']|length > 50 %}...{% endif %}
+                            </a>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="bg-purple-900/40 text-purple-300 text-xs px-3 py-1 rounded-full">{{ post['category'] }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-gray-400 text-sm">
+                            <i class="fas fa-eye mr-1 text-purple-500"></i>{{ post['views'] }}
+                        </td>
+                        <td class="px-6 py-4 text-gray-500 text-sm">{{ post['created_at'][:10] }}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex gap-2">
+                                <a href="/post/{{ post['id'] }}"
+                                    class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-xs transition">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="/admin/delete/{{ post['id'] }}"
+                                    onclick="return confirm('Rostdan o\'chirasizmi?')"
+                                    class="bg-red-900/50 hover:bg-red-800 border border-red-800/50 px-3 py-1.5 rounded-lg text-xs text-red-400 hover:text-red-300 transition">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-20 text-gray-600">
+            <i class="fas fa-inbox text-6xl mb-4 block"></i>
+            <p class="text-xl">Hali postlar yo'q</p>
+            <a href="/admin/new" class="text-purple-400 hover:text-purple-300 mt-2 inline-block">+ Birinchi postni yarating</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

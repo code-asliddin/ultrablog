@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Profilni tahrirlash{% endblock %}
+{% block content %}
+
+<div class="max-w-2xl mx-auto px-4 py-12">
+    <div class="bg-gray-900/60 border border-gray-800/60 rounded-3xl p-8 animate-fade-in">
+
+        <div class="flex items-center gap-5 mb-8">
+            <img src="{{ get_gravatar(user['email'], 80) }}"
+                alt="{{ user['username'] }}"
+                class="w-20 h-20 rounded-2xl border-2 border-purple-700/50 shadow-lg">
+            <div>
+                <h1 class="text-3xl font-black gradient-text">Profilni tahrirlash</h1>
+                <p class="text-gray-500 text-sm mt-1">@{{ user['username'] }}</p>
+                <p class="text-gray-600 text-xs mt-1">
+                    <i class="fas fa-info-circle mr-1 text-purple-500"></i>
+                    Avatar uchun <a href="https://gravatar.com" target="_blank" class="text-purple-400 hover:underline">gravatar.com</a> dan foydalaning
+                </p>
+            </div>
+        </div>
+
+        <form method="POST" class="space-y-6">
+
+            <!-- USERNAME (readonly) -->
+            <div>
+                <label class="text-gray-400 text-sm font-medium block mb-2">
+                    <i class="fas fa-user mr-2 text-purple-400"></i>Username
+                </label>
+                <input type="text" value="{{ user['username'] }}" disabled
+                    class="w-full bg-gray-800/30 border border-gray-700/30 rounded-xl px-5 py-3 text-gray-500 text-sm cursor-not-allowed">
+                <p class="text-xs text-gray-600 mt-1">Username o'zgartirib bo'lmaydi</p>
+            </div>
+
+            <!-- EMAIL (readonly) -->
+            <div>
+                <label class="text-gray-400 text-sm font-medium block mb-2">
+                    <i class="fas fa-envelope mr-2 text-purple-400"></i>Email
+                </label>
+                <input type="email" value="{{ user['email'] }}" disabled
+                    class="w-full bg-gray-800/30 border border-gray-700/30 rounded-xl px-5 py-3 text-gray-500 text-sm cursor-not-allowed">
+            </div>
+
+            <!-- BIO -->
+            <div>
+                <label class="text-gray-400 text-sm font-medium block mb-2">
+                    <i class="fas fa-pen mr-2 text-purple-400"></i>Bio
+                </label>
+                <textarea name="bio" rows="4"
+                    placeholder="O'zingiz haqingizda yozing..."
+                    class="w-full bg-gray-800/70 border border-gray-700/60 focus:border-purple-500 rounded-xl px-5 py-3 text-gray-200 outline-none transition text-sm resize-none">{{ user['bio'] }}</textarea>
+                <p class="text-xs text-gray-600 mt-1">Maksimal 300 ta belgi</p>
+            </div>
+
+            <div class="flex gap-4">
+                <button type="submit"
+                    class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 py-3.5 rounded-xl font-bold text-white transition glow">
+                    <i class="fas fa-save mr-2"></i>Saqlash
+                </button>
+                <a href="/profile/{{ user['username'] }}"
+                    class="flex-1 bg-gray-800 hover:bg-gray-700 border border-gray-700 py-3.5 rounded-xl font-semibold text-gray-300 transition text-center">
+                    <i class="fas fa-times mr-2"></i>Bekor qilish
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

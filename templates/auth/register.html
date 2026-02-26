@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block title %}Ro'yxatdan o'tish{% endblock %}
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center px-4 py-20">
+    <div class="w-full max-w-md animate-fade-in">
+
+        <div class="bg-gray-900/80 border border-purple-900/50 rounded-3xl p-10 shadow-2xl glow">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-lg">
+                    🚀
+                </div>
+                <h1 class="text-3xl font-black gradient-text">Ro'yxatdan o'tish</h1>
+                <p class="text-gray-500 text-sm mt-2">Hisob yarating va keling!</p>
+            </div>
+
+            <form method="POST" class="space-y-5" id="regForm">
+
+                <!-- USERNAME -->
+                <div>
+                    <label class="text-gray-400 text-sm font-medium block mb-2">
+                        <i class="fas fa-user mr-2 text-purple-400"></i>Username
+                    </label>
+                    <input name="username" id="username" type="text" placeholder="username123"
+                        class="w-full bg-gray-800/70 border border-gray-700/60 focus:border-purple-500 rounded-xl px-5 py-3 text-gray-200 outline-none transition text-sm"
+                        required minlength="3">
+                    <p id="username_hint" class="text-xs mt-1 text-gray-600">Faqat harf, raqam va _ ishlating</p>
+                </div>
+
+                <!-- EMAIL -->
+                <div>
+                    <label class="text-gray-400 text-sm font-medium block mb-2">
+                        <i class="fas fa-envelope mr-2 text-purple-400"></i>Email
+                    </label>
+                    <input name="email" type="email" placeholder="email@example.com"
+                        class="w-full bg-gray-800/70 border border-gray-700/60 focus:border-purple-500 rounded-xl px-5 py-3 text-gray-200 outline-none transition text-sm"
+                        required>
+                </div>
+
+                <!-- PAROL -->
+                <div>
+                    <label class="text-gray-400 text-sm font-medium block mb-2">
+                        <i class="fas fa-lock mr-2 text-purple-400"></i>Parol
+                    </label>
+                    <div class="relative">
+                        <input name="password" id="password" type="password" placeholder="••••••••"
+                            class="w-full bg-gray-800/70 border border-gray-700/60 focus:border-purple-500 rounded-xl px-5 py-3 text-gray-200 outline-none transition text-sm pr-12"
+                            required>
+                        <button type="button" onclick="togglePass('password')"
+                            class="absolute right-4 top-3 text-gray-500 hover:text-purple-400 transition">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <!-- PAROL KUCHI -->
+                    <div class="mt-2">
+                        <div class="flex gap-1 mb-1">
+                            <div id="s1" class="h-1 flex-1 rounded bg-gray-700 transition-all"></div>
+                            <div id="s2" class="h-1 flex-1 rounded bg-gray-700 transition-all"></div>
+                            <div id="s3" class="h-1 flex-1 rounded bg-gray-700 transition-all"></div>
+                            <div id="s4" class="h-1 flex-1 rounded bg-gray-700 transition-all"></div>
+                        </div>
+                        <p id="strength_text" class="text-xs text-gray-600">Parol kuchini ko'ring</p>
+                    </div>
+                    <div class="mt-2 grid grid-cols-2 gap-1">
+                        <p id="c1" class="text-xs text-gray-600"><i class="fas fa-circle mr-1 text-xs"></i>Kamida 8 belgi</p>
+                        <p id="c2" class="text-xs text-gray-600"><i class="fas fa-circle mr-1 text-xs"></i>Katta harf</p>
+                        <p id="c3" class="text-xs text-gray-600"><i class="fas fa-circle mr-1 text-xs"></i>Raqam</p>
+                        <p id="c4" class="text-xs text-gray-600"><i class="fas fa-circle mr-1 text-xs"></i>Maxsus belgi</p>
+                    </div>
+                </div>
+
+                <!-- PAROL TASDIQLASH -->
+                <div>
+                    <label class="text-gray-400 text-sm font-medium block mb-2">
+                        <i class="fas fa-lock mr-2 text-purple-400"></i>Parolni tasdiqlang
+                    </label>
+                    <div class="relative">
+                        <input name="confirm" id="confirm" type="password" placeholder="••••••••"
+                            class="w-full bg-gray-800/70 border border-gray-700/60 focus:border-purple-500 rounded-xl px-5 py-3 text-gray-200 outline-none transition text-sm pr-12"
+                            required>
+                        <button type="button" onclick="togglePass('confirm')"
+                            class="absolute right-4 top-3 text-gray-500 hover:text-purple-400 transition">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <p id="match_hint" class="text-xs mt-1 text-gray-600"></p>
+                </div>
+
+                <!-- SHARTLAR -->
+                <div class="flex items-start gap-3">
+                    <input type="checkbox" id="terms" required
+                        class="mt-1 accent-purple-500 w-4 h-4 cursor-pointer">
+                    <label for="terms" class="text-gray-400 text-sm cursor-pointer">
+                        <a href="#" class="text-purple-400 hover:underline">Foydalanish shartlari</a> va
+                        <a href="#" class="text-purple-400 hover:underline">Maxfiylik siyosati</a>ga roziman
+                    </label>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 py-3.5 rounded-xl font-bold text-white transition shadow-lg glow">
+                    <i class="fas fa-user-plus mr-2"></i>Ro'yxatdan o'tish
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-gray-500 text-sm">
+                    Hisobingiz bormi?
+                    <a href="/login" class="text-purple-400 hover:text-purple-300 font-semibold transition">Kirish</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function togglePass(id) {
+    const input = document.getElementById(id);
+    input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+document.getElementById('password').addEventListener('input', function() {
+    const val = this.value;
+    let score = 0;
+    const c1 = val.length >= 8;
+    const c2 = /[A-Z]/.test(val);
+    const c3 = /[0-9]/.test(val);
+    const c4 = /[^A-Za-z0-9]/.test(val);
+
+    [c1,c2,c3,c4].forEach((c, i) => {
+        const el = document.getElementById('c'+(i+1));
+        el.className = 'text-xs ' + (c ? 'text-green-400' : 'text-gray-600');
+        if(c) score++;
+    });
+
+    const colors = ['bg-red-500','bg-orange-500','bg-yellow-500','bg-green-500'];
+    const texts = ['Juda zaif','Zaif','O\'rtacha','Kuchli 💪'];
+    for(let i=1; i<=4; i++) {
+        const s = document.getElementById('s'+i);
+        s.className = 'h-1 flex-1 rounded transition-all ' + (i <= score ? colors[score-1] : 'bg-gray-700');
+    }
+    document.getElementById('strength_text').textContent = score > 0 ? texts[score-1] : 'Parol kuchini ko\'ring';
+    document.getElementById('strength_text').className = 'text-xs ' + ['text-red-400','text-orange-400','text-yellow-400','text-green-400'][score-1] || 'text-gray-600';
+});
+
+document.getElementById('confirm').addEventListener('input', function() {
+    const match = this.value === document.getElementById('password').value;
+    const hint = document.getElementById('match_hint');
+    hint.textContent = this.value ? (match ? '✓ Parollar mos keldi' : '✗ Parollar mos kelmadi') : '';
+    hint.className = 'text-xs mt-1 ' + (match ? 'text-green-400' : 'text-red-400');
+});
+
+document.getElementById('username').addEventListener('input', function() {
+    const valid = /^[a-zA-Z0-9_]+$/.test(this.value) && this.value.length >= 3;
+    const hint = document.getElementById('username_hint');
+    hint.textContent = this.value ? (valid ? '✓ Username mos' : '✗ Faqat harf, raqam va _') : 'Faqat harf, raqam va _ ishlating';
+    hint.className = 'text-xs mt-1 ' + (valid ? 'text-green-400' : 'text-red-400');
+});
+</script>
+
+{% endblock %}

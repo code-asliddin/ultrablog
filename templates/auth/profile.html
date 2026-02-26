@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile_user['username'] }} — Profil{% endblock %}
+{% block content %}
+
+<div class="max-w-4xl mx-auto px-4 py-12">
+
+    <!-- PROFIL CARD -->
+    <div class="bg-gray-900/60 border border-gray-800/60 rounded-3xl overflow-hidden mb-8 animate-fade-in">
+
+        <!-- BANNER -->
+        <div class="h-36 bg-gradient-to-br from-purple-900 via-indigo-900 to-gray-900 relative">
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-4 left-10 w-32 h-32 bg-purple-500 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-0 right-10 w-40 h-40 bg-indigo-500 rounded-full blur-3xl"></div>
+            </div>
+        </div>
+
+        <div class="px-8 pb-8">
+            <!-- AVATAR -->
+            <div class="flex items-end justify-between -mt-12 mb-6">
+                <img src="{{ get_gravatar(profile_user['email'], 100) }}"
+                    alt="{{ profile_user['username'] }}"
+                    class="w-24 h-24 rounded-2xl border-4 border-gray-900 shadow-xl">
+                {% if user and user['id'] == profile_user['id'] %}
+                <a href="/profile/edit"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 px-5 py-2.5 rounded-xl text-sm font-medium transition flex items-center gap-2 text-gray-300">
+                    <i class="fas fa-edit"></i> Profilni tahrirlash
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- INFO -->
+            <div class="flex flex-wrap items-start justify-between gap-6">
+                <div>
+                    <h1 class="text-3xl font-black text-white">{{ profile_user['username'] }}</h1>
+                    <p class="text-gray-500 text-sm mt-1">
+                        <i class="fas fa-envelope mr-2 text-purple-400"></i>{{ profile_user['email'] }}
+                    </p>
+                    <p class="text-gray-500 text-sm mt-1">
+                        <i class="fas fa-calendar mr-2 text-purple-400"></i>
+                        {{ profile_user['created_at'][:10] }} dan beri a'zo
+                    </p>
+                    {% if profile_user['bio'] %}
+                    <p class="text-gray-300 mt-4 max-w-lg leading-relaxed">{{ profile_user['bio'] }}</p>
+                    {% else %}
+                    <p class="text-gray-600 mt-4 italic text-sm">Bio qo'shilmagan</p>
+                    {% endif %}
+                </div>
+
+                <!-- STATS -->
+                <div class="flex gap-6">
+                    <div class="text-center bg-gray-800/50 border border-gray-700/50 rounded-2xl px-6 py-4">
+                        <p class="text-3xl font-black gradient-text">{{ comments_count }}</p>
+                        <p class="text-gray-500 text-xs mt-1">Izohlar</p>
+                    </div>
+                    <div class="text-center bg-gray-800/50 border border-gray-700/50 rounded-2xl px-6 py-4">
+                        <p class="text-3xl font-black gradient-text">
+                            {% if profile_user['is_active'] %}
+                            <span class="text-green-400">✓</span>
+                            {% else %}
+                            <span class="text-red-400">✗</span>
+                            {% endif %}
+                        </p>
+                        <p class="text-gray-500 text-xs mt-1">Holat</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BADGE -->
+    <div class="flex flex-wrap gap-3 mb-8">
+        <span class="bg-purple-900/40 border border-purple-700/40 text-purple-300 px-4 py-2 rounded-full text-sm flex items-center gap-2">
+            <i class="fas fa-user-tag"></i>
+            {% if profile_user['role'] == 'admin' %}Administrator{% else %}Foydalanuvchi{% endif %}
+        </span>
+        {% if comments_count >= 10 %}
+        <span class="bg-yellow-900/40 border border-yellow-700/40 text-yellow-300 px-4 py-2 rounded-full text-sm flex items-center gap-2">
+            <i class="fas fa-star"></i> Faol a'zo
+        </span>
+        {% endif %}
+        {% if comments_count >= 1 %}
+        <span class="bg-blue-900/40 border border-blue-700/40 text-blue-300 px-4 py-2 rounded-full text-sm flex items-center gap-2">
+            <i class="fas fa-comment"></i> Izohchi
+        </span>
+        {% endif %}
+    </div>
+
+    <div class="text-center mt-6">
+        <a href="/" class="text-gray-500 hover:text-purple-400 text-sm transition">
+            <i class="fas fa-arrow-left mr-1"></i>Bosh sahifaga qaytish
+        </a>
+    </div>
+</div>
+
+{% endblock %}

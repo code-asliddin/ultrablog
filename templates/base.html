@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}UltraBlog{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        }
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(15, 12, 41, 0.85);
+        }
+        .prose-custom p { margin-bottom: 1.2rem; line-height: 1.9; font-size: 1.05rem; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f0c29; }
+        ::-webkit-scrollbar-thumb { background: #667eea; border-radius: 3px; }
+        .animate-fade-in { animation: fadeIn 0.6s ease forwards; }
+        @keyframes fadeIn { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+        .glow { box-shadow: 0 0 20px rgba(102, 126, 234, 0.4); }
+
+        /* MOBILE MENU */
+        #mobile-menu { display: none; }
+        #mobile-menu.open { display: block; }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+<!-- NAVBAR -->
+<nav class="nav-blur fixed top-0 w-full z-50 border-b border-purple-900/30">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+
+        <!-- LOGO -->
+        <a href="/" class="text-2xl font-black gradient-text tracking-tight shrink-0">
+            ⚡ UltraBlog
+        </a>
+
+        <!-- DESKTOP SEARCH -->
+        <form action="/" method="GET" class="hidden md:flex items-center flex-1 max-w-sm">
+            <input name="q" placeholder="Qidirish..."
+                class="bg-gray-800 border border-purple-800/50 rounded-l-full px-4 py-2 text-sm text-gray-200 outline-none focus:border-purple-500 w-full transition">
+            <button class="bg-purple-700 hover:bg-purple-600 px-4 py-2 rounded-r-full text-white transition">
+                <i class="fas fa-search text-sm"></i>
+            </button>
+        </form>
+
+        <!-- DESKTOP NAV BUTTONS -->
+        <div class="hidden md:flex items-center gap-3">
+            {% if user %}
+            <!-- PROFIL -->
+            <a href="/profile/{{ user['username'] }}"
+                class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2 rounded-full text-sm transition">
+                <img src="https://www.gravatar.com/avatar/{{ user['email'] | lower }}?s=30&d=identicon"
+                    class="w-6 h-6 rounded-full border border-purple-500">
+                <span class="text-gray-200 font-medium">{{ user['username'] }}</span>
+            </a>
+            <!-- LOGOUT -->
+            <a href="/logout"
+                class="bg-red-900/40 hover:bg-red-800/60 border border-red-800/40 px-4 py-2 rounded-full text-sm text-red-400 hover:text-red-300 transition">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+            {% else %}
+            <!-- LOGIN -->
+            <a href="/login"
+                class="text-gray-300 hover:text-purple-400 font-medium text-sm transition px-3 py-2">
+                <i class="fas fa-sign-in-alt mr-1"></i>Kirish
+            </a>
+            <!-- REGISTER -->
+            <a href="/register"
+                class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 px-5 py-2 rounded-full text-sm font-semibold transition glow">
+                <i class="fas fa-user-plus mr-1"></i>Ro'yxatdan o'tish
+            </a>
+            {% endif %}
+            <!-- ADMIN -->
+            <a href="/admin"
+                class="bg-gray-800 hover:bg-gray-700 border border-gray-700/50 px-4 py-2 rounded-full text-sm font-semibold transition text-gray-400 hover:text-gray-200"
+                title="Admin panel">
+                <i class="fas fa-lock"></i>
+            </a>
+        </div>
+
+        <!-- MOBILE BURGER -->
+        <button onclick="toggleMenu()" class="md:hidden text-gray-300 hover:text-purple-400 transition text-xl">
+            <i class="fas fa-bars" id="burger-icon"></i>
+        </button>
+    </div>
+
+    <!-- MOBILE MENU -->
+    <div id="mobile-menu" class="md:hidden border-t border-purple-900/30 bg-gray-950/95 px-4 py-4 space-y-3">
+        <!-- SEARCH -->
+        <form action="/" method="GET" class="flex">
+            <input name="q" placeholder="Qidirish..."
+                class="flex-1 bg-gray-800 border border-purple-800/50 rounded-l-full px-4 py-2 text-sm text-gray-200 outline-none focus:border-purple-500 transition">
+            <button class="bg-purple-700 hover:bg-purple-600 px-4 py-2 rounded-r-full text-white transition">
+                <i class="fas fa-search text-sm"></i>
+            </button>
+        </form>
+
+        {% if user %}
+        <a href="/profile/{{ user['username'] }}"
+            class="flex items-center gap-3 bg-gray-800 border border-gray-700 px-4 py-3 rounded-xl text-sm">
+            <img src="https://www.gravatar.com/avatar/{{ user['email'] | lower }}?s=36&d=identicon"
+                class="w-8 h-8 rounded-full border border-purple-500">
+            <div>
+                <p class="text-gray-200 font-semibold">{{ user['username'] }}</p>
+                <p class="text-gray-500 text-xs">Profilni ko'rish</p>
+            </div>
+        </a>
+        <a href="/logout"
+            class="block w-full text-center bg-red-900/40 border border-red-800/40 px-4 py-2.5 rounded-xl text-sm text-red-400 transition">
+            <i class="fas fa-sign-out-alt mr-2"></i>Chiqish
+        </a>
+        {% else %}
+        <a href="/login"
+            class="block w-full text-center bg-gray-800 border border-gray-700 px-4 py-2.5 rounded-xl text-sm text-gray-300 transition">
+            <i class="fas fa-sign-in-alt mr-2"></i>Kirish
+        </a>
+        <a href="/register"
+            class="block w-full text-center bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-2.5 rounded-xl text-sm font-semibold transition">
+            <i class="fas fa-user-plus mr-2"></i>Ro'yxatdan o'tish
+        </a>
+        {% endif %}
+        <a href="/admin"
+            class="block w-full text-center bg-gray-800 border border-gray-700/50 px-4 py-2.5 rounded-xl text-sm text-gray-400 transition">
+            <i class="fas fa-lock mr-2"></i>Admin panel
+        </a>
+    </div>
+</nav>
+
+<!-- FLASH MESSAGES -->
+<div class="pt-20">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+            <div class="max-w-7xl mx-auto px-4 mt-4 animate-fade-in">
+                <div class="bg-purple-900/50 border border-purple-500/50 text-purple-200 px-5 py-3 rounded-xl flex items-center justify-between">
+                    <span><i class="fas fa-info-circle mr-2 text-purple-400"></i>{{ msg }}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-purple-400 hover:text-purple-200 ml-4">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+
+<!-- FOOTER -->
+<footer class="mt-20 border-t border-purple-900/30 py-10">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <p class="text-2xl font-black gradient-text mb-2">⚡ UltraBlog</p>
+        <p class="text-gray-600 text-sm mb-4">Texnologiya va hayot haqida eng yaxshi maqolalar</p>
+        <div class="flex items-center justify-center gap-6 text-sm text-gray-600">
+            <a href="/" class="hover:text-purple-400 transition">Bosh sahifa</a>
+            <a href="/register" class="hover:text-purple-400 transition">Ro'yxatdan o'tish</a>
+            <a href="/login" class="hover:text-purple-400 transition">Kirish</a>
+            <a href="/admin" class="hover:text-purple-400 transition">Admin</a>
+        </div>
+        <p class="text-gray-700 text-xs mt-6">© 2024 UltraBlog — Barcha huquqlar himoyalangan</p>
+    </div>
+</footer>
+
+<script>
+function toggleMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const icon = document.getElementById('burger-icon');
+    menu.classList.toggle('open');
+    icon.className = menu.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
+}
+
+// Flash xabarlarni 4 sekunddan keyin yashirish
+setTimeout(() => {
+    document.querySelectorAll('.animate-fade-in').forEach(el => {
+        if(el.querySelector('.fa-info-circle')) {
+            el.style.transition = 'opacity 0.5s';
+            el.style.opacity = '0';
+            setTimeout(() => el.remove(), 500);
+        }
+    });
+}, 4000);
+</script>
+
+</body>
+</html>

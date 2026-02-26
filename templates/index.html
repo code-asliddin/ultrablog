@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block title %}UltraBlog — Bosh sahifa{% endblock %}
+{% block content %}
+
+<!-- HERO -->
+<section class="hero-bg py-24 px-4 text-center relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-10 left-10 w-72 h-72 bg-purple-600 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-indigo-600 rounded-full blur-3xl"></div>
+    </div>
+    <div class="relative z-10 animate-fade-in">
+        <span class="bg-purple-900/60 text-purple-300 text-xs font-semibold px-4 py-2 rounded-full border border-purple-700/50 mb-6 inline-block">
+            🔥 Eng so'nggi yangiliklar
+        </span>
+        <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+            <span class="gradient-text">Ultra</span> Blog
+        </h1>
+        <p class="text-gray-400 text-xl max-w-2xl mx-auto mb-8">
+            Texnologiya, hayot va ilm-fan haqida chuqur maqolalar
+        </p>
+        <!-- SEARCH -->
+        <form action="/" method="GET" class="flex max-w-md mx-auto">
+            <input name="q" value="{{ search }}" placeholder="Maqola qidiring..."
+                class="flex-1 bg-gray-800/80 border border-purple-700/50 rounded-l-full px-6 py-3 outline-none focus:border-purple-500 text-gray-200 transition">
+            <button class="bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-3 rounded-r-full font-semibold hover:opacity-90 transition">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </div>
+</section>
+
+<!-- KATEGORIYALAR -->
+{% if categories %}
+<section class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex flex-wrap gap-3">
+        <a href="/" class="bg-purple-700/30 border border-purple-600/40 hover:bg-purple-700/60 px-5 py-2 rounded-full text-sm font-medium transition">
+            🌐 Hammasi
+        </a>
+        {% for cat in categories %}
+        <a href="/?cat={{ cat['category'] }}" class="bg-gray-800/60 border border-gray-700/40 hover:border-purple-500 hover:bg-purple-900/30 px-5 py-2 rounded-full text-sm font-medium transition text-gray-300">
+            {{ cat['category'] }}
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ASOSIY KONTENT -->
+<section class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+    <!-- POSTLAR -->
+    <div class="lg:col-span-2">
+        {% if search %}
+        <p class="text-gray-400 mb-6">"<span class="text-purple-400">{{ search }}</span>" bo'yicha natijalar:</p>
+        {% endif %}
+
+        {% if posts %}
+            {% for post in posts %}
+            <article class="card-hover bg-gray-900/60 border border-gray-800/60 rounded-2xl overflow-hidden mb-8 animate-fade-in">
+                {% if post['image_url'] %}
+                <img src="{{ post['image_url'] }}" alt="{{ post['title'] }}" class="w-full h-56 object-cover">
+                {% else %}
+                <div class="w-full h-40 bg-gradient-to-br from-purple-900/40 to-indigo-900/40 flex items-center justify-center">
+                    <i class="fas fa-newspaper text-5xl text-purple-700/40"></i>
+                </div>
+                {% endif %}
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="bg-purple-900/50 text-purple-300 text-xs px-3 py-1 rounded-full border border-purple-800/50">
+                            {{ post['category'] }}
+                        </span>
+                        <span class="text-gray-500 text-xs">
+                            <i class="fas fa-eye mr-1"></i>{{ post['views'] }} ko'rish
+                        </span>
+                        <span class="text-gray-500 text-xs">
+                            <i class="fas fa-clock mr-1"></i>{{ post['created_at'][:10] }}
+                        </span>
+                    </div>
+                    <h2 class="text-xl font-bold text-white mb-3 hover:text-purple-300 transition">
+                        <a href="/post/{{ post['id'] }}">{{ post['title'] }}</a>
+                    </h2>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        {{ post['content'][:180] }}...
+                    </p>
+                    <a href="/post/{{ post['id'] }}" class="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 font-semibold text-sm transition">
+                        To'liq o'qish <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-20 text-gray-600">
+                <i class="fas fa-ghost text-6xl mb-4 block"></i>
+                <p class="text-xl">Hozircha maqolalar yo'q</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="space-y-8">
+        <!-- POPULAR -->
+        <div class="bg-gray-900/60 border border-gray-800/60 rounded-2xl p-6">
+            <h3 class="text-lg font-bold mb-5 flex items-center gap-2">
+                <span class="text-yellow-400">🔥</span> Eng ko'p o'qilgan
+            </h3>
+            {% for p in popular %}
+            <a href="/post/{{ p['id'] }}" class="flex items-start gap-3 mb-4 group">
+                <span class="text-2xl font-black text-gray-700 group-hover:text-purple-500 transition w-8">
+                    {{ loop.index }}
+                </span>
+                <div>
+                    <p class="text-sm font-medium text-gray-300 group-hover:text-purple-300 transition leading-snug">
+                        {{ p['title'][:60] }}
+                    </p>
+                    <p class="text-xs text-gray-600 mt-1"><i class="fas fa-eye mr-1"></i>{{ p['views'] }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- ABOUT -->
+        <div class="bg-gradient-to-br from-purple-900/30 to-indigo-900/30 border border-purple-800/40 rounded-2xl p-6 text-center">
+            <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                ⚡
+            </div>
+            <h3 class="font-bold text-lg mb-2">UltraBlog</h3>
+            <p class="text-gray-400 text-sm">Texnologiya va hayot haqida eng yaxshi maqolalar</p>
+        </div>
+    </aside>
+
+</section>
+
+{% endblock %}

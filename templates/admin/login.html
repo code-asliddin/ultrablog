@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Admin Login{% endblock %}
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center px-4 py-20">
+    <div class="w-full max-w-md animate-fade-in">
+
+        <!-- CARD -->
+        <div class="bg-gray-900/80 border border-purple-900/50 rounded-3xl p-10 shadow-2xl glow">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-lg">
+                    🔐
+                </div>
+                <h1 class="text-3xl font-black gradient-text">Admin Panel</h1>
+                <p class="text-gray-500 text-sm mt-2">Kirish uchun ma'lumotlarni kiriting</p>
+            </div>
+
+            <form method="POST" class="space-y-5">
+                <div>
+                    <label class="text-gray-400 text-sm font-medium block mb-2">
+                        <i class="fas fa-user mr-2 text-purple-400"></i>Login
+                    </label>
+                    <input name="username" type="text" placeholder="admin"
+                        class="w-full bg-gray-800/70 border border-gray-700/60 focus:border-purple-500 rounded-xl px-5 py-3 text-gray-200 outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="text-gray-400 text-sm font-medium block mb-2">
+                        <i class="fas fa-lock mr-2 text-purple-400"></i>Parol
+                    </label>
+                    <input name="password" type="password" placeholder="••••••••"
+                        class="w-full bg-gray-800/70 border border-gray-700/60 focus:border-purple-500 rounded-xl px-5 py-3 text-gray-200 outline-none transition text-sm">
+                </div>
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 py-3.5 rounded-xl font-bold text-white transition shadow-lg glow mt-2">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Kirish
+                </button>
+            </form>
+
+            <div class="mt-6 p-4 bg-gray-800/40 rounded-xl border border-gray-700/40 text-center">
+                <p class="text-gray-500 text-xs">Default: <span class="text-purple-400">admin</span> / <span class="text-purple-400">admin123</span></p>
+            </div>
+        </div>
+
+        <div class="text-center mt-6">
+            <a href="/" class="text-gray-500 hover:text-purple-400 text-sm transition">
+                <i class="fas fa-arrow-left mr-1"></i>Bosh sahifaga qaytish
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
